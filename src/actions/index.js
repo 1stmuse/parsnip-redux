@@ -62,7 +62,7 @@ export function fetchTasks(){
     return (dispatch)=>{
         api.fetchTacks()
             .then(res=>{
-                dispatch(fetchTasksSucceeded(res.data))
+                dispatch(fetchTasksSucceeded(res.json().data))
             })
     }
 }
