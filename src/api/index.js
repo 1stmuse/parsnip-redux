@@ -9,7 +9,7 @@ const client = axios.create({
 })
 
 export function fetchTacks(){
-    return client.get('/task')
+    return client.get('/tasks')
 }
 
 export function createTask(params){

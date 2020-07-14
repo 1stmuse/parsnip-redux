@@ -1,10 +1,5 @@
 import * as api from '../api'
 
-// let _id = 1;
-// export function uniqueId() {
-//     return _id++;
-// }
-
 function createTaskSucceeded(task) {
     return {
         type: 'CREATE_TASK_SUCCEEDED',
@@ -16,7 +11,7 @@ function createTaskSucceeded(task) {
 
 export function createTask({title, description, status = 'Unstarted'}){
     return (dispatch)=>{
-        api.createTask(title,description,status)
+        api.createTask({title,description,status})
             .then(res=>{
                 dispatch(createTaskSucceeded(res.data))
             })
@@ -49,6 +44,12 @@ export function editTask(id, status){
     }
 }
 
+function fetchTasksStarted(){
+    return{
+        type:'FETCH_TASKS_STARTED'
+    }
+}
+
 function fetchTasksSucceeded(tasks){
     return{
         type: 'FETCH_TASKS_SUCCEEDED',
@@ -57,12 +58,26 @@ function fetchTasksSucceeded(tasks){
         }
     }
 }
+function fetchTasksFailed(error){
+    return{
+        type:'FETCH_TASKS_FAILED',
+        payload:{
+            error,
+        }
+    }
+}
 
 export function fetchTasks(){
     return (dispatch)=>{
+        dispatch(fetchTasksStarted())
         api.fetchTacks()
             .then(res=>{
-                dispatch(fetchTasksSucceeded(res.json().data))
+                setTimeout(()=>{
+                    dispatch(fetchTasksSucceeded(res.data))
+                },2000)
+            })
+            .catch(err=>{
+                dispatch(fetchTasksFailed(err.message))
             })
     }
 }

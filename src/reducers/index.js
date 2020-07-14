@@ -1,43 +1,51 @@
-// import {uniqueId} from '../actions'
-// const mockTasks = [
-//     {
-//         id: uniqueId(),
-//         title: 'Learn Redux',
-//         description: 'The store, actions, and reducers, oh my!',
-//         status: 'In Progress',
-//     },
-//     {
-//         id: uniqueId(),
-//         title: 'Peace on Earth',
-//         description: 'No big deal.',
-//         status: 'In Progress',
-//     },
-// ]
+
+const initialState = {
+    tasks:[],
+    isLoading: false,
+    error:null,
+}
 
 
-export default function tasks(state = {tasks:[]}, action) {
+export default function tasks(state = initialState, action) {
     switch(action.type){
-    
-        case 'CREATE_TASK' : {
+        case 'FETCH_TASKS_STARTED' :{
+
+            return{
+                ...state,
+                isLoading: true
+            }
+        }
+
+        case 'FETCH_TASKS_SUCCEEDED' :{
             return {
+                ...state,
+                isLoading: false,
+                tasks : action.payload.tasks
+            }
+        }
+        case 'FETCH_TASKS_FAILED' :{
+            return{
+                ...state,
+                isLoading:false,
+                error: action.payload.error,
+            }
+        }
+        case 'CREATE_TASK_SUCCEEDED' : {
+            return {
+                ...state,
                 tasks: [...state.tasks, action.payload]
             }
         }
-        case 'EDIT_TASK' :{
+        case 'EDIT_TASK_SUCCEEDED' :{
             const {payload} = action
             return{
+                ...state,
                 tasks: state.tasks.map(task=>{
                     if(task.id === payload.task.id){
                         return payload.task
                     }
                     return task
                 })
-            }
-        }
-
-        case 'FETCH_TASKS_SUCCEEDED' :{
-            return {
-                tasks : action.payload.tasks
             }
         }
         default: {

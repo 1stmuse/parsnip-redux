@@ -50,32 +50,40 @@ class TasksPage extends Component {
     }
 
     render() {
-
-        return (
-            <div className="task­list">
-                <div className='drop'>
-                    <div className="button-div">
-                        <button className="button" onClick={this.toggleForm}>
-                            + New task
-                        </button>
-                    </div>
-                    {this.state.showNewCardForm && (
-                    <form className="" onSubmit={this.onCreateTask}>
-                        <input className="full­width­input" onChange={this.onTitleChange} value={this.state.title} type="text" placeholder="title" />
-                        <input className="full­width­input" onChange={this.onDescriptionChange} value={this.state.description} type="text" placeholder="description" />
-                        <div className='save-btn'>
-                            <button className="save" type="submit">
-                                Save
+        
+        if(this.props.isLoading){
+            return (
+                <div>
+                    Loading...
+                </div>
+            )
+        }else{
+            return (
+                <div className="task­list">
+                    <div className='drop'>
+                        <div className="button-div">
+                            <button className="button" onClick={this.toggleForm}>
+                                + New task
                             </button>
                         </div>
-                    </form>)}
+                        {this.state.showNewCardForm && (
+                        <form className="" onSubmit={this.onCreateTask}>
+                            <input className="full­width­input" onChange={this.onTitleChange} value={this.state.title} type="text" placeholder="title" />
+                            <input className="full­width­input" onChange={this.onDescriptionChange} value={this.state.description} type="text" placeholder="description" />
+                            <div className='save-btn'>
+                                <button className="save" type="submit">
+                                    Save
+                                </button>
+                            </div>
+                        </form>)}
+                    </div>
+                    
+                    <div className="taskList">
+                        {this.renderTaskLists()}
+                    </div>
                 </div>
-                
-                <div className="taskList">
-                    {this.renderTaskLists()}
-                </div>
-            </div>
-        );
+            );
+        }
     }
 }
 
